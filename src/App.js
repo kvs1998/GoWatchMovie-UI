@@ -1,5 +1,9 @@
 import React, {Fragment} from 'react';
-import {BrowserRouter as Router, Switch, Link, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Link, Route, useParams, useRouteMatch} from 'react-router-dom';
+import Movies from './components/Movies';
+import Home from './components/Home';
+import Admin from './components/Admin';
+import Categories from './components/Categories';
  
 export default function App() {
   return (
@@ -18,6 +22,9 @@ export default function App() {
                 </li>
                 <li className="list-group-item">
                   <Link to="/movies">Movies</Link>
+                </li>                
+                <li className="list-group-item">
+                  <Link to="/by-category">Categories</Link>
                 </li>
                 <li className="list-group-item">
                   <Link to="/admin">Manage Catalogue</Link>
@@ -27,9 +34,21 @@ export default function App() {
           </div>
           <div className="col-md-10">
             <Switch>
+              <Route path="/movies/:id" component={OneMovie}>
+              </Route>
               <Route path="/movies">
                 <Movies />
-              </Route>              
+              </Route>  
+              <Route exact path="/by-category">
+                <CategoryPage />
+              </Route>          
+
+              <Route
+              exact
+              path="/by-category/drama"
+              render={(props) => <Categories {...props} title={`Drama`}/>}
+              />
+
               <Route path="/admin">
                 <Admin />
               </Route>              
@@ -44,14 +63,16 @@ export default function App() {
   );
 }
 
-function Home() {
-  return <h2>Home</h2>
-}
 
-function Movies() {
-  return <h2>Movies</h2>
-}
-
-function Admin() {
-  return <h2>Manage Catalogue</h2>
-}
+function CategoryPage() {
+  let { path, url } = useRouteMatch()
+  return (
+    <div>
+      <h2>Categories</h2>
+      <ul>
+        <li><Link to={`${path}/drama`}>Drama</Link></li>
+        <li><Link to={`${url}/comedy`}>Comedy</Link></li>
+      </ul>
+    </div>
+  ) 
+} 
