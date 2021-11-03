@@ -1,14 +1,15 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
+import { Link } from 'react-router-dom';
 
-export default class OneMovie extends Component {   
+export default class Genres extends Component {   
   state = { 
-    movie: {},
+    genres: [],
     isLoaded: false,
     error: null,
   };
   
   componentDidMount() {
-      fetch("http://localhost:4000/v1/movie/" + this.props.match.params.id,)
+      fetch("http://localhost:4000/v1/genres/")
       .then((response) => {
         console.log("Status code is", response.status)
         if(response.Satus != 200) {
@@ -19,8 +20,9 @@ export default class OneMovie extends Component {
         } 
       })
       .then((json)=>{
+        console.log(json)
         this.setState({
-          movie: json.LatestMovie,
+          genres: json.AllGenres,
           isLoaded:true,
         },
         (error) => this.setState({
@@ -29,18 +31,23 @@ export default class OneMovie extends Component {
         })
         )
       })
-  }
-
-  render() {
-    const {movie, isLoaded} = this.state
+  } 
+  render() {    
+    const {genres, isLoaded} = this.state
     if(!isLoaded) {
       return <p>LOADING</p>;
     } 
     return (
-        <Fragment>
-            <h2>Movie: {this.state.movie.title}</h2>
-            <p>Rating: {this.state.movie.rating}</p>
-        </Fragment>
+      <div>        
+        <h2>Genres</h2> 
+        {genres.map((m)=>(
+          <li>
+            <Link>
+              {m.genre_name}
+            </Link>
+          </li>
+        ))}
+      </div>
     )
   }
 }

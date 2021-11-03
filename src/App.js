@@ -2,8 +2,9 @@ import React, {Fragment} from 'react';
 import {BrowserRouter as Router, Switch, Link, Route, useParams, useRouteMatch} from 'react-router-dom';
 import Movies from './components/Movies';
 import Home from './components/Home';
-import Admin from './components/Admin';
-import Categories from './components/Categories';
+import AddMovie from './components/AddMovie';
+import Genres from './components/Genres';
+import OneMovie from './components/OneMovie';
  
 export default function App() {
   return (
@@ -24,10 +25,10 @@ export default function App() {
                   <Link to="/movies">Movies</Link>
                 </li>                
                 <li className="list-group-item">
-                  <Link to="/by-category">Categories</Link>
+                  <Link to="/genres">Genres</Link>
                 </li>
                 <li className="list-group-item">
-                  <Link to="/admin">Manage Catalogue</Link>
+                  <Link to="/admin">Add Movie</Link>
                 </li>
               </ul>
             </nav>
@@ -39,18 +40,18 @@ export default function App() {
               <Route path="/movies">
                 <Movies />
               </Route>  
-              <Route exact path="/by-category">
-                <CategoryPage />
+              <Route exact path="/genres">
+                <Genres />
               </Route>          
 
-              <Route
+              {/* <Route
               exact
               path="/by-category/drama"
               render={(props) => <Categories {...props} title={`Drama`}/>}
-              />
+              /> */}
 
-              <Route path="/admin">
-                <Admin />
+              <Route exact path="/admin">
+                <AddMovie />
               </Route>              
               <Route path="/">
                 <Home />
