@@ -32,6 +32,7 @@ export default class Genres extends Component {
         )
       })
   } 
+  
   render() {    
     const {genres, isLoaded} = this.state
     if(!isLoaded) {
@@ -42,7 +43,7 @@ export default class Genres extends Component {
         <h2>Genres</h2> 
         {genres.map((m)=>(
           <li>
-            <Link>
+            <Link to={`/OneGenre/${m.id}`}>
               {m.genre_name}
             </Link>
           </li>
