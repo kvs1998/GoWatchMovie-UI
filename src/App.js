@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import {BrowserRouter as Router, Switch, Link, Route, useParams, useRouteMatch} from 'react-router-dom';
+import "./App.css";
 import Movies from './components/Movies';
 import Home from './components/Home';
 import AddMovie from './components/AddMovie';
@@ -12,7 +13,7 @@ export default function App() {
     <Router>
       <div className="container">
         <div className="row">
-          <h1 className="mt-3">GoWatchMovie!!</h1>
+          <h1 className="mt-3">Movies.com</h1>
           <hr className="mb-3"></hr>
         </div>
         <div className="row">
