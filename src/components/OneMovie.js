@@ -19,6 +19,7 @@ export default class OneMovie extends Component {
         } 
       })
       .then((json)=>{
+        console.log(json.LatestMovie)
         this.setState({
           movie: json.LatestMovie,
           isLoaded:true,
@@ -42,12 +43,19 @@ export default class OneMovie extends Component {
           <div className="row">
             <div className="col-sm-9">
               <h4>{movie.title}</h4>
+              <h6>{movie.year}</h6>
               <div className="row">
                 <div className="col-xs-8 col-sm-6 bg-warning">
-                  {movie.mpaa_rating}
+                  Rating: {movie.mpaa_rating}
                 </div>
                 <div className="col-xs-4 col-sm-6">
-                  {movie.runtime}
+                  Runtime: {movie.runtime}
+                </div>
+                <hr></hr>
+              </div>              
+              <div className="row">                
+                <div className="col-xs-4 col-sm-6">
+                  {movie.description}
                 </div>
               </div>
             </div>

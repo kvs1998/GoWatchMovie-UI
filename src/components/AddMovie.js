@@ -25,6 +25,7 @@ export default class AddMovie extends Component {
   handleChange(event) {
     console.log("Target",event.target.value)
     console.log("Name",event.target.name)
+
     this.setState((prevState) => ({
       movie: {
         ...prevState.movie,
@@ -53,48 +54,53 @@ export default class AddMovie extends Component {
     var {movie, isLoaded} = this.state
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <h1>ADD MOVIES</h1>
+        <form onSubmit={this.handleSubmit} className="form">
           <div className="form-group">
-            <label for="exampleInputName2">Movie Title</label>
-            <input type="text" className="form-control" id="exampleInputName2" placeholder="Movie Title" 
-            value={movie.title} onChange={this.handleChange} name="title"
-            />
+            <label for="exampleInputName2" className="col-sm-2 col-form-label">Movie Title</label>
+            <div className="col-sm-10">
+              <input type="text" className="form-control" id="exampleInputName2"
+              placeholder="Movie Title" 
+              value={movie.title} onChange={this.handleChange} name="title"
+              />
+            </div>
           </div>          
           <div className="form-group">
-            <label for="exampleInputName2">Description</label>
-            <input type="text" className="form-control" placeholder="" 
-            value={movie.description} onChange={this.handleChange} name="desc"/>
+            <label for="exampleInputName2" className="form-label mt-4">Description</label>
+            <div className="col-sm-10">
+              <textarea rows="3" className="form-control" placeholder="" 
+              value={movie.description} onChange={this.handleChange} name="description"/>
+            </div>
           </div>          
           <div className="form-group">
-            <label for="exampleInputName2">Year</label>
-            <input type="text" className="form-control" placeholder="2006-01-02" 
-            value={movie.year} onChange={this.handleChange} name="year"/>
+            <label for="exampleInputName2" className="form-label mt-4">Year</label>            
+            <div className="col-sm-10">
+              <input type="text" className="form-control" placeholder="2006-01-02" 
+              value={movie.year} onChange={this.handleChange} name="year"/>
+            </div>
           </div>              
           <div className="form-group">
-            <label for="exampleInputName2">Rating</label>
-            <input type="number" className="form-control" placeholder=""
-            value={movie.rating} onChange={this.handleChange} name="rating"/>
+            <label for="exampleInputName2" className="form-label mt-4">Rating</label>            
+            <div className="col-sm-10">
+              <input type="number" className="form-control" placeholder="1-5"
+              value={movie.rating} onChange={this.handleChange} name="rating"/>
+            </div>
           </div>              
           <div className="form-group">
-            <label for="exampleInputName2">Mpaa Rating</label>  
-            <select className="custom-select"            
-            value={movie.mpaa_rating}
-            handleChange={this.handleChange}>
-              <option selected>Select..</option>
-              <option value="1">Pg13</option>
-              <option value="2">G</option>
-              <option value="3">R</option>
+            <label for="exampleInputName2" className="form-label mt-4">Mpaa Rating</label>  
+            <select className="form-select selectform"            
+              value={movie.mpaa_rating}
+              onChange={this.handleChange}
+              name="mpaa_rating">
+              <option value="PG13">Pg13</option>
+              <option value="G">G</option>
+              <option value="R">R</option>
             </select>
-          </div>              
-          <div className="form-group">
-            <label for="exampleInputName2">Movie Genre</label>
-            <input type="text" class="form-control" placeholder="" />
-          </div>      
-          <button type="submit" className="btn btn-default">Submit</button>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>        
         </form>
         {JSON.stringify(this.state, null, 3)}
       </div>
+
     );
   }
 }

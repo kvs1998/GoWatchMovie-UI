@@ -2,11 +2,14 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 
 export default class Genres extends Component {   
-  state = { 
-    genres: [],
-    isLoaded: false,
-    error: null,
-  };
+  constructor(props) {
+    super(props);       
+    this.state = { 
+      genres: [],
+      isLoaded: false,
+      error: null,
+    };  
+  }
   
   componentDidMount() {
       fetch("http://localhost:4000/v1/genres/")
@@ -32,7 +35,7 @@ export default class Genres extends Component {
         )
       })
   } 
-  
+
   render() {    
     const {genres, isLoaded} = this.state
     if(!isLoaded) {
@@ -40,14 +43,26 @@ export default class Genres extends Component {
     } 
     return (
       <div>        
-        <h2>Genres</h2> 
-        {genres.map((m)=>(
-          <li>
-            <Link to={`/OneGenre/${m.id}`}>
-              {m.genre_name}
-            </Link>
-          </li>
-        ))}
+        <table class="table table-hover"> 
+          <thead>
+            <tr>
+              <th scope="col"><h3 className="titletext">Genres</h3></th>
+            </tr>
+          </thead>        
+          <tbody>
+            {genres.map((m)=>(                      
+              <tr class="table-active"> 
+                <th scope="row">               
+                  <li>
+                    <Link className="nav-link active tablelink" to={{pathname: `/OneGenre/${m.id}`, genrename: m.genre_name}}>
+                      {m.genre_name}
+                    </Link>
+                  </li>
+                </th>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     )
   }

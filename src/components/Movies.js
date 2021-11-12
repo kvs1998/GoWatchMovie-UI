@@ -44,15 +44,27 @@ export default class Movies extends Component {
     } 
     else {
       return (
-        <Fragment>        
-          <h2>Movies</h2>
-          <ul>
-            {this.state.movies.map( (m) => (
-              <li key={m.id}>
-                <Link to={`/OneMovie/${m.id}`}>{m.title}</Link>              
-              </li> 
-            ) )}
-          </ul>
+        <Fragment>   
+          <table class="table table-hover"> 
+            <thead>
+              <tr>
+                <th scope="col"><h3 className="titletext">Movies</h3></th>
+              </tr>
+            </thead>        
+            <tbody>
+              {movies.map((m)=>(              
+                <tr class="table-active"> 
+                  <th scope="row">               
+                    <li>
+                      <Link className="nav-link active tablelink" to={`/OneMovie/${m.id}`}>
+                        {m.title}
+                      </Link>
+                    </li>
+                  </th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </Fragment>
       )
     }

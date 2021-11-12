@@ -2,11 +2,14 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 
 export default class OneGenre extends Component {   
-  state = { 
-    movies: [],
-    isLoaded: false,
-    error: null,
-  };
+  constructor(props) {
+    super(props);
+    this.state = { 
+      movies: [],
+      isLoaded: false,
+      error: null,
+    };;
+  }
 
   componentDidMount() {
     fetch("http://localhost:4000/v1/movies/" + this.props.match.params.id)
@@ -46,14 +49,26 @@ export default class OneGenre extends Component {
     }
     return (
       <div>        
-        <h2>Genres</h2> 
-        {movies.map((m)=>(
-          <li>
-            <Link to={`/OneMovie/${m.id}`}>
-              {m.title}
-            </Link>
-          </li>
-        ))}
+        <table class="table table-hover"> 
+          <thead>
+            <tr>
+              <th scope="col"><h3 className="titletext">{this.props.location.genrename}</h3></th>
+            </tr>
+          </thead>        
+          <tbody>
+            {movies.map((m)=>(              
+              <tr class="table-active"> 
+                <th scope="row">               
+                  <li>
+                    <Link className="nav-link active tablelink" to={`/OneMovie/${m.id}`}>
+                      {m.title}
+                    </Link>
+                  </li>
+                </th>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     )
   }
