@@ -51,7 +51,7 @@ export default class AddMovie extends Component {
   }
 
   render() {    
-    var {movie, isLoaded} = this.state
+    let {movie, isLoaded} = this.state
     return (
       <div>
         <form onSubmit={this.handleSubmit} className="form">

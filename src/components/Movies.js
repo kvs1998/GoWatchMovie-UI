@@ -1,20 +1,30 @@
 import React, {Component, Fragment} from 'react';
 import { Link } from 'react-router-dom';
 
-export default class Movies extends Component {  
-  state = {
-    movies: [],
-    isLoaded: false,
-    error: null,
-  };  
+export default class Movies extends Component { 
+  constructor(props){
+    super(props);
+    this.state = {
+      movies: [],
+      isLoaded: false,
+      error: null,
+    };  
+    this.delete = this.delete.bind(this)
+  } 
+
+  delete = (id) => {  
+    console.log("DELETE", id)  
+    fetch("http://localhost:4000/v1/admin/deletemovie/"+ id)
+        .then(response => response.json())
+        .then(()=> {
+          this.setState({
+          movies: this.state.movies.filter((i, _) => i.id != id)
+        })        
+        })
+        .catch(error => console.log('delete error', error))
+  }
+
   componentDidMount() {
-    // this.setState({
-    //   movies: [
-    //     {id:1, title: 'The Dark Night', runtime: 123},
-    //     {id:1, title: 'The Godfather', runtime: 134},
-    //     {id:1, title: 'Spiderman', runtime: 110},
-    //   ]
-    // })
     fetch("http://localhost:4000/v1/movies")
     .then((response) => {
       console.log("Status code is", response.status)
@@ -60,7 +70,8 @@ export default class Movies extends Component {
                         {m.title}
                       </Link>
                     </li>
-                  </th>
+                  </th>                              
+                  <td><i className="bi bi-trash white" onClick={() => this.delete(m.id)}></i></td>
                 </tr>
               ))}
             </tbody>
