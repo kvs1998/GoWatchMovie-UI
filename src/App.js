@@ -15,13 +15,14 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      jwt: "d",
+      jwt: "",
     };
     this.handleJwtChange = this.handleJwtChange.bind(this);
     this.logout = this.logout.bind(this);
   }
 
   handleJwtChange = (jwt) => {
+    console.log("See", jwt)
     this.setState({
       jwt: jwt,    
     })
@@ -36,7 +37,7 @@ export default class App extends Component {
   render(){
     let loginlink;
     if(this.state.jwt === "") {
-      loginlink = <Link to="/login" className="nav-link linkclass">Login</Link>
+      loginlink = <Link to={{pathname: `/login`, handleJwtChange: this.handleJwtChange}} className="nav-link linkclass">Login</Link>
     } else {
       loginlink = <Link to="/logout" className="nav-link linkclass" onClick={this.logout}>Logout</Link>
     }

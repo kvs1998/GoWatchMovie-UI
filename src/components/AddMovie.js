@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-
+import Option from './FormInput/Option';
+ 
 export default class AddMovie extends Component {    
   constructor(props) {
     super(props);
@@ -13,7 +13,9 @@ export default class AddMovie extends Component {
         mpaa_rating: "",
         rating: "",
         description: "",
+        movie_genre: [],
       },
+      genres:  [],      
       isLoaded: false,
       error:'',
     };
@@ -22,24 +24,58 @@ export default class AddMovie extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   
-  handleChange(event) {
-    console.log("Target",event.target.value)
-    console.log("Name",event.target.name)
-
-    this.setState((prevState) => ({
-      movie: {
-        ...prevState.movie,
-        [event.target.name]: event.target.value,
+  componentDidMount() {
+    fetch("http://localhost:4000/v1/genres/")
+    .then((response) => {
+      console.log("Status code is", response.status)
+      if(response.Satus != 200) {
+        let err = Error
+        err.message = "INVALID"
+        this.setState({error: err})
+        return response.json()
+      } 
+    })
+    .then((json)=>{
+      console.log(json)
+      this.setState({
+        genres: json.AllGenres,
+        isLoaded:true,
       },
-    }));
+      (error) => this.setState({
+        isLoaded: true,
+        error
+      })
+      )
+    })
+} 
+
+handleChange(event) {
+    const name = event.target.name;
+    let joined = [...new Set(this.state.movie.movie_genre.concat(Number(event.target.value)))];
+    
+    if(name === 'movie_genre') {      
+      this.setState((prevState) => ({
+        movie: {
+          ...prevState.movie,
+          movie_genre: joined,
+        },
+      }));
+      console.log(this.state.movie.movie_genre)
+    } else {    
+      this.setState((prevState) => ({
+        movie: {
+          ...prevState.movie,
+          [name]: event.target.value,
+        },
+      }));
+    }
   }
 
   handleSubmit(event) {
     event.preventDefault();
     const { movie } = this.state;
-    const data=new FormData()
-    const payload=Object.fromEntries(data.entries()) 
-    console.log("payload",JSON.stringify(movie))
+    // const data=new FormData()
+    // const payload=Object.fromEntries(data.entries()) 
     const requestOptions = {
       method: 'POST',
       body: JSON.stringify(movie)
@@ -55,36 +91,41 @@ export default class AddMovie extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit} className="form">
+
           <div className="form-group">
-            <label for="exampleInputName2" className="col-sm-2 col-form-label">Movie Title</label>
+            <label for="exampleInputName2" className="form-label mt-4">Movie Title</label>
             <div className="col-sm-10">
               <input type="text" className="form-control" id="exampleInputName2"
               placeholder="Movie Title" 
               value={movie.title} onChange={this.handleChange} name="title"
               />
             </div>
-          </div>          
+          </div>    
+
           <div className="form-group">
             <label for="exampleInputName2" className="form-label mt-4">Description</label>
             <div className="col-sm-10">
               <textarea rows="3" className="form-control" placeholder="" 
               value={movie.description} onChange={this.handleChange} name="description"/>
             </div>
-          </div>          
+          </div>    
+
           <div className="form-group">
             <label for="exampleInputName2" className="form-label mt-4">Year</label>            
             <div className="col-sm-10">
               <input type="text" className="form-control" placeholder="2006-01-02" 
               value={movie.year} onChange={this.handleChange} name="year"/>
             </div>
-          </div>              
+          </div>    
+
           <div className="form-group">
             <label for="exampleInputName2" className="form-label mt-4">Rating</label>            
             <div className="col-sm-10">
               <input type="number" className="form-control" placeholder="1-5"
               value={movie.rating} onChange={this.handleChange} name="rating"/>
             </div>
-          </div>              
+          </div> 
+
           <div className="form-group">
             <label for="exampleInputName2" className="form-label mt-4">Mpaa Rating</label>  
             <select className="form-select selectform"            
@@ -96,6 +137,18 @@ export default class AddMovie extends Component {
               <option value="R">R</option>
             </select>
           </div>
+                    
+          <div className="form-group">
+            <label for="exampleInputName2" className="form-label mt-4">Genre</label>  
+            <select className="form-select selectform"     
+              multiple="multiple"       
+              value={movie.movie_genre}
+              onChange={this.handleChange}
+              name="movie_genre">
+              <Option options={this.state.genres}/>  
+            </select>
+          </div>
+
           <button type="submit" class="btn btn-primary">Submit</button>        
         </form>
         {JSON.stringify(this.state, null, 3)}

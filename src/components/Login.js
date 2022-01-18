@@ -3,13 +3,14 @@ import React, {Component} from 'react';
 export default class Login extends Component {  
     constructor(props) {
         super(props);
+        console.log(this.props)
         this.state = {
             Email: "",
             Password: "",
             error: null,
         };    
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        //this.handleSubmit = this.handleSubmit.bind(this);
     }  
 
     handleChange(event) {
@@ -29,15 +30,20 @@ export default class Login extends Component {
         };
         fetch("http://localhost:4000/v1/signin", requestOptions)
             .then(response => response.json())
-            .then((data)=>console.log("data", data))
-            .catch(error => console.log('Form submit error', error))
+            .then((data) => {
+                if(data.error) {
+                    console.log(data.error)
+                } else {
+                    this.props.handleJwtChange(data.response);
+                }
+            })
     }
 
     render() {    
         let {Email, Password} = this.state;
         return (
             <div>   
-            <form onSubmit={this.handleSubmit} className="form">
+            <form onSubmit={(e) => this.handleSubmit(e)} className="form">
                 <div className="form-group">
                     <label for="exampleInputEmail1" className="form-label mt-4">Email address</label>
                     <input type="email" className="form-control" id="exampleInputEmail1" 
